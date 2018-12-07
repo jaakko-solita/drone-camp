@@ -37,9 +37,17 @@ func main() {
 		rings := track.ExtractRings(markers)
 		for id, ring := range rings {
 			pose := ring.EstimatePose(drone)
-			gocv.PutText(&frame, fmt.Sprintf("%++v\n", pose),
+			gocv.PutText(&frame, fmt.Sprintf("%++v\n", pose.Position),
 				image.Pt(50,50),
 				gocv.FontHersheySimplex, 0.8, color.RGBA{0, 0, 0, 0}, 2)
+
+			if (pose.Position[0]>0) {
+                gocv.PutText(&frame, fmt.Sprintf("%++v\n", pose.Position),
+                				image.Pt(100,100),
+                				gocv.FontHersheySimplex, 0.8, color.RGBA{0, 0, 0, 0}, 2)
+
+                drone.Left(1)
+			}
 
 			ring.Draw(&frame, pose, drone)
 			_ = id
